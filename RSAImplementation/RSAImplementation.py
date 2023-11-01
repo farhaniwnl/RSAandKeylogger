@@ -65,7 +65,7 @@ def decrypt(ciphertext, d, n):
 
 if __name__ == "__main__":
     # Step 1: Get the message from the user
-    message = input("Enter the message to encrypt: ")
+    message = input("Enter message: ")
 
     # Step 2: Generate RSA keys
     p, q, e, d, n = keys()
