@@ -47,21 +47,18 @@ def keys():
     d = d % phi
     return p, q, e, d, n
 
-def encrypt(M, e, n): #This function encrypts the inputted message
-    ciphertext = ""  # initialize an empty string to store the ciphertext without spaces
-    spaced_ciphertext = ""  # initialize another string with spaces for decryption
+def encrypt(M, e, n):
+    ciphertext = []  # empty list to store chars
     for char in M:
-        encrypted_char = pow(ord(char), e, n)      #encrypting each letter
-        ciphertext += str(encrypted_char)          #no space between characters for printed response
-        spaced_ciphertext += str(encrypted_char) + " "  # Add a space between characters for separation (makes decryption easier)
-    return ciphertext, spaced_ciphertext.strip()  # Return both versions in a tuple
+        encrypted_char = pow(ord(char), e, n) #store char by calculation method C = M^e (mod n)
+        ciphertext.append(encrypted_char)
+    return ciphertext
 
 def decrypt(ciphertext, d, n):
-    message = ""  # initialize an empty string to store the decrypted message
-    char_codes = ciphertext[1].split()  #split the spaced ciphertext into individual character codes
-    for char_code in char_codes:
-        decrypted_char = chr(pow(int(char_code), d, n)) #decrypting each letter
-        message += decrypted_char #add it to the string message
+    message = ''  # Create an empty string to store the decrypted message
+    for char in ciphertext:
+        decrypted_char = chr(pow(char, d, n)) #decrypt char by calculating M = C^d (mod n)
+        message += decrypted_char  # append each char to  message
     return message
 
 
@@ -81,7 +78,7 @@ if __name__ == "__main__":
 
     # Step 3: Encrypt the message
     ciphertext = encrypt(message, e, n)
-    print("Ciphertext:", ciphertext[0])
+    print("Ciphertext:", ciphertext)
 
     # Step 4: Decrypt the ciphertext
     decrypted_message = decrypt(ciphertext, d, n)
