@@ -32,7 +32,6 @@ def keys():
     e = random.randint(2, phi)
     while gcd(e, phi) != 1:
         e = random.randint(2, phi)
-
     def extended_gcd(e, phi):
         if e == 0:
             return (phi, 0, 1)
@@ -45,18 +44,23 @@ def keys():
     return p, q, e, d, n
 
 def encrypt(M, e, n):
-    ciphertext = []  # Create an empty list to store ciphertext characters
+    ciphertext = ""  # Initialize an empty string to store the ciphertext without spaces
+    spaced_ciphertext = ""  # Initialize another string with spaces for decryption
     for char in M:
         encrypted_char = pow(ord(char), e, n)
-        ciphertext.append(encrypted_char)
-    return ciphertext
+        ciphertext += str(encrypted_char)
+        spaced_ciphertext += str(encrypted_char) + " "  # Add a space between characters for separation
+    return ciphertext, spaced_ciphertext.strip()  # Return both versions
 
 def decrypt(ciphertext, d, n):
-    message = ''  # Create an empty string to store the decrypted message
-    for char_code in ciphertext:
-        decrypted_char = chr(pow(char_code, d, n))
-        message += decrypted_char  # Append each decrypted character to the message
+    message = ""  # Initialize an empty string to store the decrypted message
+    char_codes = ciphertext[1].split()  # Split the spaced ciphertext into individual character codes
+    for char_code in char_codes:
+        decrypted_char = chr(pow(int(char_code), d, n))
+        message += decrypted_char
     return message
+
+
 
 if __name__ == "__main__":
     # Step 1: Get the message from the user
@@ -73,7 +77,7 @@ if __name__ == "__main__":
 
     # Step 3: Encrypt the message
     ciphertext = encrypt(message, e, n)
-    print("Ciphertext:", ciphertext)
+    print("Ciphertext:", ciphertext[0])
 
     # Step 4: Decrypt the ciphertext
     decrypted_message = decrypt(ciphertext, d, n)
