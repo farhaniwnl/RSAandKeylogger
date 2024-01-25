@@ -2,7 +2,7 @@
 
 ## Instructions to run the RSA implementation:
 
-*Clone the repository
+*Clone the repository*
 *Run the program
 
 ## Instructions to run keylogger:
